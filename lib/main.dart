@@ -1,28 +1,50 @@
 import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/components/cart_component.dart';
+import 'package:food_app/components/category_component.dart';
+import 'package:food_app/components/favorite_component.dart';
+import 'package:food_app/views/screens/bill.dart';
+import 'package:food_app/views/screens/burger.dart';
+import 'package:food_app/views/screens/fruits.dart';
 import 'package:food_app/views/screens/homepage.dart';
 import 'package:food_app/views/screens/intro_page_1.dart';
 import 'package:food_app/views/screens/intro_page_2.dart';
 import 'package:food_app/views/screens/intro_page_3.dart';
+import 'package:food_app/views/screens/juice.dart';
 import 'package:food_app/views/screens/login_page.dart';
+import 'package:food_app/views/screens/nothing.dart';
+import 'package:food_app/views/screens/pizza.dart';
+import 'package:food_app/views/screens/sandwich.dart';
+import 'package:food_app/views/screens/snack.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'res/global.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Global.isVisited = prefs.getBool('isVisited') ?? false;
-  Global.isLogged = prefs.getBool('isLogged')?? false;
+  Global.isLogged = prefs.getBool('isLogged') ?? false;
+
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        appBarTheme: AppBarTheme(
+          color: Colors.teal.shade400,
+          titleTextStyle: GoogleFonts.arya(
+            color: Colors.white,
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       darkTheme: ThemeData(useMaterial3: true),
       getPages: [
@@ -32,6 +54,17 @@ void main() async{
         GetPage(name: '/intro2', page: () => const IntroScreen3()),
         GetPage(name: '/login', page: () => const LoginScreen()),
         GetPage(name: '/homepage', page: () => const HomePage()),
+        GetPage(name: '/category', page: () => const CategoryComponent()),
+        GetPage(name: '/favorite', page: () => const FavoriteComponent()),
+        GetPage(name: '/cart', page: () => const CartComponent()),
+        GetPage(name: '/pizza', page: () => const PizzaPage()),
+        GetPage(name: '/burger', page: () => const BurgerPage()),
+        GetPage(name: '/fruit', page: () => const FruitPage()),
+        GetPage(name: '/sandwich', page: () => const SandwichPage()),
+        GetPage(name: '/juice', page: () => const JuicePage()),
+        GetPage(name: '/snacks', page: () => const SnacksPage()),
+        GetPage(name: '/bill', page: () => const BillPage()),
+        GetPage(name: '/nothing', page: () => const Nothing()),
       ],
     ),
   );
@@ -45,14 +78,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
     Timer(
       const Duration(seconds: 5),
       () => Get.off(
-        () => (Global.isVisited==false)?const IntroScreen1():(Global.isLogged==false)?const LoginScreen():const HomePage(),
+        () => (Global.isVisited == false)
+            ? const IntroScreen1()
+            : (Global.isLogged == false)
+                ? const LoginScreen()
+                : const HomePage(),
         curve: Curves.easeInOut,
         transition: Transition.fadeIn,
       ),

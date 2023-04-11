@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/views/screens/homepage.dart';
+import 'package:food_app/views/screens/login_page.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../res/global.dart';
 
 class IntroScreen3 extends StatelessWidget {
   const IntroScreen3({Key? key}) : super(key: key);
@@ -120,7 +123,7 @@ class IntroScreen3 extends StatelessWidget {
                       prefs.setBool('isVisited', true);
 
                       Get.off(
-                            () => const HomePage(),
+                            () => const LoginScreen(),
                         curve: Curves.easeInOut,
                         transition: Transition.rightToLeft,
                         duration: const Duration(seconds: 1),

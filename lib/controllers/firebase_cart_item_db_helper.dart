@@ -1,43 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FireStoreDbHelper {
-  FireStoreDbHelper._();
+class FireStoreCartItemDbHelper {
+  FireStoreCartItemDbHelper._();
 
-  static final FireStoreDbHelper fireStoreDbHelper = FireStoreDbHelper._();
+  static final FireStoreCartItemDbHelper fireStoreCartItemDbHelper = FireStoreCartItemDbHelper._();
 
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   Future<void> insert({required Map<String, dynamic> data}) async {
     DocumentSnapshot<Map<String, dynamic>> counter =
-    await db.collection('counter').doc('task_counter').get();
+    await db.collection('counter').doc('cart_counter').get();
     int id = counter['id'];
     int length = counter['length'];
 
-    await db.collection('task').doc('${++id}').set(data);
+    await db.collection('cart').doc('${++id}').set(data);
 
-    await db.collection('counter').doc('task_counter').update({'id': id});
+    await db.collection('counter').doc('cart_counter').update({'id': id});
 
     await db
         .collection('counter')
-        .doc('task_counter')
+        .doc('cart_counter')
         .update({'length': ++length});
   }
 
   Future<void> delete({required String id}) async {
-    await db.collection('task').doc(id).delete();
+    await db.collection('cart').doc(id).delete();
 
     DocumentSnapshot<Map<String, dynamic>> counter =
-    await db.collection('counter').doc('task_counter').get();
+    await db.collection('counter').doc('cart_counter').get();
     int length = counter['length'];
 
     await db
         .collection('counter')
-        .doc('task_counter')
+        .doc('cart_counter')
         .update({'length': --length});
   }
 
   Future<void> update(
       Map<String, dynamic> data,{required String id}) async {
-    await db.collection('task').doc(id).update(data);
+    await db.collection('cart').doc(id).update(data);
   }
 }

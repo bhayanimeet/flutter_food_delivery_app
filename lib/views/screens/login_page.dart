@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:food_app/views/screens/homepage.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 height: double.infinity,
                 width: double.infinity,
-                padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 50),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -70,8 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Form(
                   key: formKey,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const SizedBox(height: 18),
                       Container(
                         alignment: Alignment.centerLeft,
                         margin: const EdgeInsets.only(left: 15),
@@ -84,7 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: TextFormField(
@@ -149,7 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: TextFormField(
@@ -227,7 +227,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5),
                       Padding(
                         padding: const EdgeInsets.only(right: 15),
                         child: Align(
@@ -242,7 +241,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
@@ -257,38 +255,40 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
                                 await prefs.setBool('isLogged', true);
-                                setState(() {
-                                  Navigator.pushReplacementNamed(context, 'homePage',
-                                      arguments: res['user']);
-                                });
+                                Get.off(
+                                    () => const HomePage(),
+                                  duration: const Duration(seconds: 2),
+                                  curve: Curves.easeInOut,
+                                  transition: Transition.fadeIn,
+                                );
+                              } else if (res['error'] != null) {
+                                Get.showSnackbar(
+                                  GetSnackBar(
+                                    title: 'Error',
+                                    backgroundColor: Colors.teal.shade300,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    borderRadius: 20,
+                                    duration: const Duration(seconds: 2),
+                                    margin: const EdgeInsets.all(15),
+                                    message: res['error'],
+                                    snackStyle: SnackStyle.FLOATING,
+                                  ),
+                                );
+                              } else {
+                                Get.showSnackbar(
+                                  GetSnackBar(
+                                    title: 'Error',
+                                    backgroundColor: Colors.teal.shade300,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    borderRadius: 20,
+                                    duration: const Duration(seconds: 2),
+                                    margin: const EdgeInsets.all(15),
+                                    message: 'Please check internet connection...',
+                                    snackStyle: SnackStyle.FLOATING,
+                                  ),
+                                );
                               }
-                              else if (res['error'] != null) {
-                                setState(() {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(res['error']),
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                });
-                              }
-                              else {
-                                setState(() {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                          "Please check network connection..."),
-                                      behavior: SnackBarBehavior.floating,
-                                      margin: const EdgeInsets.all(20),
-                                      duration: const Duration(milliseconds: 1500),
-                                      backgroundColor: Colors.red.shade400,
-                                    ),
-                                  );
-                                });
-                              }
-                            }
-                            else if (isSignUp == false) {
+                            } else if (isSignUp == false) {
                               Map<String, dynamic> res = await FirebaseHelper
                                   .firebaseHelper
                                   .signIn(email: email, password: password);
@@ -297,35 +297,38 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
                                 await prefs.setBool('isLogged', true);
-                                setState(() {
-                                  Navigator.pushReplacementNamed(context, 'homePage',
-                                      arguments: res['user']);
-                                });
-                              }
-                              else if (res['error'] != null) {
-                                setState(() {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(res['error']),
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                });
-                              }
-                              else {
-                                setState(() {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                          "Please check network connection..."),
-                                      behavior: SnackBarBehavior.floating,
-                                      margin: const EdgeInsets.all(20),
-                                      duration: const Duration(milliseconds: 1500),
-                                      backgroundColor: Colors.red.shade400,
-                                    ),
-                                  );
-                                });
+                                Get.off(
+                                      () => const HomePage(),
+                                  duration: const Duration(seconds: 2),
+                                  curve: Curves.easeInOut,
+                                  transition: Transition.fadeIn,
+                                );
+                              } else if (res['error'] != null) {
+                                Get.showSnackbar(
+                                  GetSnackBar(
+                                    title: 'Error',
+                                    backgroundColor: Colors.teal.shade300,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    borderRadius: 20,
+                                    duration: const Duration(seconds: 2),
+                                    margin: const EdgeInsets.all(15),
+                                    message: res['error'],
+                                    snackStyle: SnackStyle.FLOATING,
+                                  ),
+                                );
+                              } else {
+                                Get.showSnackbar(
+                                  GetSnackBar(
+                                    title: 'Error',
+                                    backgroundColor: Colors.teal.shade300,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    borderRadius: 20,
+                                    duration: const Duration(seconds: 2),
+                                    margin: const EdgeInsets.all(15),
+                                    message: 'Please check internet connection...',
+                                    snackStyle: SnackStyle.FLOATING,
+                                  ),
+                                );
                               }
                             }
                           }
@@ -349,36 +352,37 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          SizedBox(
-                            width: 70,
-                            child: Divider(
-                              thickness: 0.5,
-                              color: Colors.white,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15,right: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            SizedBox(
+                              width: 96,
+                              child: Divider(
+                                thickness: 0.5,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            "OR SIGN IN WITH",
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(width: 8),
-                          SizedBox(
-                            width: 70,
-                            child: Divider(
-                              thickness: 0.5,
-                              color: Colors.white,
+                            SizedBox(width: 8),
+                            Text(
+                              "OR SIGN IN WITH",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600),
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 8),
+                            SizedBox(
+                              width: 96,
+                              child: Divider(
+                                thickness: 0.5,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
@@ -391,46 +395,52 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               if (res['user'] != null) {
                                 SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
+                                    await SharedPreferences.getInstance();
                                 await prefs.setBool('isLogged', true);
-                                setState(() {
-                                  Navigator.pushReplacementNamed(context, 'homePage',
-                                      arguments: res['user']);
-                                });
+
+                                Get.off(
+                                      () => const HomePage(),
+                                  duration: const Duration(seconds: 2),
+                                  curve: Curves.easeInOut,
+                                  transition: Transition.fadeIn,
+                                );
                               } else if (res['error'] != null) {
-                                setState(() {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(res['error']),
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                });
+                                Get.showSnackbar(
+                                  GetSnackBar(
+                                    title: 'Error',
+                                    backgroundColor: Colors.teal.shade300,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    borderRadius: 20,
+                                    duration: const Duration(seconds: 2),
+                                    margin: const EdgeInsets.all(15),
+                                    message: res['error'],
+                                    snackStyle: SnackStyle.FLOATING,
+                                  ),
+                                );
                               } else {
-                                setState(() {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                          "Please check network connection..."),
-                                      behavior: SnackBarBehavior.floating,
-                                      margin: const EdgeInsets.all(20),
-                                      duration: const Duration(milliseconds: 1500),
-                                      backgroundColor: Colors.red.shade400,
-                                    ),
-                                  );
-                                });
+                                Get.showSnackbar(
+                                  GetSnackBar(
+                                    title: 'Error',
+                                    backgroundColor: Colors.teal.shade300,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    borderRadius: 20,
+                                    duration: const Duration(seconds: 2),
+                                    margin: const EdgeInsets.all(15),
+                                    message: 'Please check internet connection...',
+                                    snackStyle: SnackStyle.FLOATING,
+                                  ),
+                                );
                               }
                             },
                             child: Neumorphic(
                               style: NeumorphicStyle(
-                                color: Colors.indigo,
-                                shape: NeumorphicShape.concave,
+                                color: Colors.white,
+                                shape: NeumorphicShape.convex,
                                 boxShape: NeumorphicBoxShape.roundRect(
                                     BorderRadius.circular(10)),
                                 shadowLightColor: Colors.transparent,
                                 surfaceIntensity: 0.5,
-                                lightSource: LightSource.bottomLeft,
+                                lightSource: LightSource.bottomRight,
                                 oppositeShadowLightSource: true,
                               ),
                               child: Container(
@@ -444,11 +454,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                         height: 25,
                                         filterQuality: FilterQuality.high),
                                     const SizedBox(width: 10),
-                                    const Text(
+                                    Text(
                                       "Google",
                                       style: TextStyle(
                                         fontSize: 18,
-                                        color: Colors.white,
+                                        color: Colors.teal.shade300,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -457,50 +467,53 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 30),
                           GestureDetector(
                             onTap: () async {
                               Map<String, dynamic> res =
-                              await FirebaseHelper.firebaseHelper.guest();
+                                  await FirebaseHelper.firebaseHelper.guest();
 
                               if (res['user'] != null) {
                                 SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
+                                    await SharedPreferences.getInstance();
                                 await prefs.setBool('isLogged', true);
-                                setState(() {
-                                  Navigator.pushReplacementNamed(context, 'homePage',
-                                      arguments: res['user']);
-                                });
+                                Get.off(
+                                      () => const HomePage(),
+                                  duration: const Duration(seconds: 2),
+                                  curve: Curves.easeInOut,
+                                  transition: Transition.fadeIn,
+                                );
                               } else if (res['error'] != null) {
-                                setState(() {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content:
-                                      Text("Please check network connection..."),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration: Duration(seconds: 2),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                });
+                                Get.showSnackbar(
+                                  GetSnackBar(
+                                    title: 'Error',
+                                    backgroundColor: Colors.teal.shade300,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    borderRadius: 20,
+                                    duration: const Duration(seconds: 2),
+                                    margin: const EdgeInsets.all(15),
+                                    message: res['error'],
+                                    snackStyle: SnackStyle.FLOATING,
+                                  ),
+                                );
                               } else {
-                                setState(() {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                          "Please check network connection..."),
-                                      behavior: SnackBarBehavior.floating,
-                                      margin: const EdgeInsets.all(20),
-                                      duration: const Duration(milliseconds: 1500),
-                                      backgroundColor: Colors.red.shade400,
-                                    ),
-                                  );
-                                });
+                                Get.showSnackbar(
+                                  GetSnackBar(
+                                    title: 'Error',
+                                    backgroundColor: Colors.teal.shade300,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    borderRadius: 20,
+                                    duration: const Duration(seconds: 2),
+                                    margin: const EdgeInsets.all(15),
+                                    message: 'Please check internet connection...',
+                                    snackStyle: SnackStyle.FLOATING,
+                                  ),
+                                );
                               }
                             },
                             child: Neumorphic(
                               style: NeumorphicStyle(
-                                color: Colors.indigo,
+                                color: Colors.white,
                                 shape: NeumorphicShape.convex,
                                 boxShape: NeumorphicBoxShape.roundRect(
                                     BorderRadius.circular(10)),
@@ -514,7 +527,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 width: 120,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: Colors.indigo.shade500,
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
@@ -524,11 +537,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                         height: 30,
                                         filterQuality: FilterQuality.high),
                                     const SizedBox(width: 10),
-                                    const Text(
+                                    Text(
                                       "Guest",
                                       style: TextStyle(
                                           fontSize: 18,
-                                          color: Colors.white,
+                                          color: Colors.teal.shade300,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ],
@@ -538,7 +551,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -547,7 +559,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             account,
                             style: GoogleFonts.arya(
                               fontSize: 18,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                           GestureDetector(
@@ -578,6 +590,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 30),
                     ],
                   ),
                 ),

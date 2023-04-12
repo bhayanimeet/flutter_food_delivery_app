@@ -21,14 +21,12 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
         title: const Text(
           "Favorite items",
           style: TextStyle(
-            color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.w600,
           ),
         ),
-        backgroundColor: Colors.teal,
         centerTitle: true,
-        elevation: 0,
+        elevation: 15,
       ),
       body: (productController1.addProducts.isEmpty)
           ? Center(
@@ -48,16 +46,8 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
                         transition: Transition.fadeIn,
                       );
                     },
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(5),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.teal.shade400),
-                    ),
                     child: const Text(
                       "Explore things",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
                     ),
                   ),
                 ],

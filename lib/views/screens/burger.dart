@@ -23,7 +23,7 @@ class _BurgerPageState extends State<BurgerPage> {
       appBar: AppBar(
         title: const Text("Burger"),
         centerTitle: true,
-        elevation: 0,
+        elevation: 15,
       ),
       body: ListView.builder(
         scrollDirection: Axis.vertical,

@@ -23,7 +23,7 @@ class _JuicePageState extends State<JuicePage> {
       appBar: AppBar(
         title: const Text("Juice"),
         centerTitle: true,
-        elevation: 0,
+        elevation: 15,
       ),
       body: ListView.builder(
         scrollDirection: Axis.vertical,

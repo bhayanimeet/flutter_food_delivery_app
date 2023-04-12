@@ -23,7 +23,7 @@ class _SnacksPageState extends State<SnacksPage> {
       appBar: AppBar(
         title: const Text("Snacks"),
         centerTitle: true,
-        elevation: 0,
+        elevation: 15,
       ),
       body: ListView.builder(
         scrollDirection: Axis.vertical,

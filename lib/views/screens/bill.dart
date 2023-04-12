@@ -21,10 +21,10 @@ class _BillPageState extends State<BillPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Bill"),
         centerTitle: true,
-        backgroundColor: const Color(0xff3f736f),
-        elevation: 0,
+        elevation: 15,
       ),
       body: Column(
         children: [

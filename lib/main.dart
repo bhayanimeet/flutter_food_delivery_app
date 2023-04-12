@@ -35,17 +35,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        appBarTheme: AppBarTheme(
-          color: Colors.teal.shade400,
-          titleTextStyle: GoogleFonts.arya(
-            color: Colors.white,
-            fontSize: 25,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
+      theme: ThemeData(useMaterial3: true),
       darkTheme: ThemeData(useMaterial3: true),
       getPages: [
         GetPage(name: '/', page: () => const SplashScreen()),

@@ -21,9 +21,9 @@ class _SandwichPageState extends State<SandwichPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("sandWitch"),
+        title: const Text("sandwich"),
         centerTitle: true,
-        elevation: 0,
+        elevation: 15,
       ),
       body: ListView.builder(
         scrollDirection: Axis.vertical,
